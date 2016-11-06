@@ -29,6 +29,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Extend", "Extend\Extend.csp
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Crawler.FindAllUrlsPipeline", "Crawler.FindAllUrlsPipeline\Crawler.FindAllUrlsPipeline.csproj", "{4DE91221-7C23-4CCB-A991-1D1D937028EC}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Crawler.WriteUrlsToFipePileline", "Crawler.WriteUrlsToFilePileline\Crawler.WriteUrlsToFipePileline.csproj", "{E5B8E14D-3F37-4855-AE88-68A60AAEF0C0}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -87,6 +89,10 @@ Global
 		{4DE91221-7C23-4CCB-A991-1D1D937028EC}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{4DE91221-7C23-4CCB-A991-1D1D937028EC}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{4DE91221-7C23-4CCB-A991-1D1D937028EC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E5B8E14D-3F37-4855-AE88-68A60AAEF0C0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E5B8E14D-3F37-4855-AE88-68A60AAEF0C0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E5B8E14D-3F37-4855-AE88-68A60AAEF0C0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E5B8E14D-3F37-4855-AE88-68A60AAEF0C0}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

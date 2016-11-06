@@ -94,6 +94,10 @@
       <Project>{9acdff8a-276a-4f3f-9bd6-2cc045170c27}</Project>
       <Name>Crawler.WriteUrlsToConsolePipeline</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Crawler.WriteUrlsToFilePileline\Crawler.WriteUrlsToFipePileline.csproj">
+      <Project>{e5b8e14d-3f37-4855-ae88-68a60aaef0c0}</Project>
+      <Name>Crawler.WriteUrlsToFipePileline</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

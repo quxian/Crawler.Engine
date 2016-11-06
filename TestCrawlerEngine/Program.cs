@@ -18,6 +18,7 @@ namespace TestCrawlerEngine {
                 .AddPipeline(
                     new FindAllUrlsPipeline()
                     .NextPipeline(new WriteUrlsToConsolePipeline())
+                    .NextPipeline(new WriteUrlsToFilePileline("urls.txt"))
                 ).Run();
 
             while ('y' != Console.ReadKey().KeyChar) ;
