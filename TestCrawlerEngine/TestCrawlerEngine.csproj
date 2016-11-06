@@ -4,15 +4,17 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{90DB6255-7DDB-4B17-B7C4-1071CA75E83E}</ProjectGuid>
-    <OutputType>Library</OutputType>
+    <ProjectGuid>{539400AE-4F16-403A-8206-756D166F806C}</ProjectGuid>
+    <OutputType>Exe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Crawler.Engine</RootNamespace>
-    <AssemblyName>Crawler.Engine</AssemblyName>
+    <RootNamespace>TestCrawlerEngine</RootNamespace>
+    <AssemblyName>TestCrawlerEngine</AssemblyName>
     <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
+    <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
@@ -22,6 +24,7 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
     <OutputPath>bin\Release\</OutputPath>
@@ -40,16 +43,31 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Engine.cs" />
+    <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="App.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Crawler.Downloader\Crawler.Downloader.csproj">
+      <Project>{74a65a9a-afb3-4bcb-b78e-28c190b0f501}</Project>
+      <Name>Crawler.Downloader</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Crawler.DownloadResultProcesser\Crawler.DownloadResultProcesser.csproj">
+      <Project>{b71dad97-43f3-40bd-bcab-ab34653636b9}</Project>
+      <Name>Crawler.DownloadResultProcesser</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Crawler.Engine\Crawler.Engine.csproj">
+      <Project>{90DB6255-7DDB-4B17-B7C4-1071CA75E83E}</Project>
+      <Name>Crawler.Engine</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Crawler.IDownloader\Crawler.IDownloader.csproj">
-      <Project>{99699760-4EE6-4753-ADCA-0714A7B9DA99}</Project>
+      <Project>{99699760-4ee6-4753-adca-0714a7b9da99}</Project>
       <Name>Crawler.IDownloader</Name>
     </ProjectReference>
     <ProjectReference Include="..\Crawler.IDownloadResultProcesser\Crawler.IDownloadResultProcesser.csproj">
-      <Project>{4CB78B66-E289-4598-A8A7-29610C8FF126}</Project>
+      <Project>{4cb78b66-e289-4598-a8a7-29610c8ff126}</Project>
       <Name>Crawler.IDownloadResultProcesser</Name>
     </ProjectReference>
     <ProjectReference Include="..\Crawler.IPipeline\Crawler.IPipeline.csproj">
@@ -63,6 +81,14 @@
     <ProjectReference Include="..\Crawler.Model\Crawler.Model.csproj">
       <Project>{53E8B8E9-2E95-4031-AC8F-89823C207FF3}</Project>
       <Name>Crawler.Model</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Crawler.Scheduler\Crawler.Scheduler.csproj">
+      <Project>{cb636195-76d3-49ae-b1bd-497feb8b95f0}</Project>
+      <Name>Crawler.Scheduler</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Crawler.WriteUrlsToConsolePipeline\Crawler.WriteUrlsToConsolePipeline.csproj">
+      <Project>{9acdff8a-276a-4f3f-9bd6-2cc045170c27}</Project>
+      <Name>Crawler.WriteUrlsToConsolePipeline</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
