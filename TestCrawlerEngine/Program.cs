@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 namespace TestCrawlerEngine {
     class Program {
         static void Main(string[] args) {
-            var engine = new Engine(
+            using (new Engine(
                 new Downloader(),
                 new DownloadResultProcesser(),
                 new Scheduler())
@@ -19,12 +19,10 @@ namespace TestCrawlerEngine {
                     new FindAllUrlsPipeline()
                     .NextPipeline(new WriteUrlsToConsolePipeline())
                     .NextPipeline(new WriteUrlsToFilePileline("urls.txt"))
-                ).Run();
+                ).Run()) {
 
-            while ('y' != Console.ReadKey().KeyChar) ;
-
-            engine.Dispose();
-
+                while ('y' != Console.ReadKey().KeyChar) ;
+            }
 
             Thread.Sleep(1000);
             Console.WriteLine("end!");

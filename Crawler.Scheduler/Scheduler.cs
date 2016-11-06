@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading;
@@ -15,8 +16,27 @@ namespace Crawler {
         private Thread _doSchedulingThread;
         private bool _isSchedulingThreadStop = false;
 
+        private string _savingStateFileName_urlsQueue;
+        private string _savingStateFileName_urlsDownloaded;
+
         public event Func<string, bool> Filter;
         public event Action<List<string>> OnUrlDequeue;
+
+        public Scheduler() {
+            _savingStateFileName_urlsQueue = $"{nameof(Scheduler)}.{nameof(_savingStateFileName_urlsQueue)}.txt";
+            _savingStateFileName_urlsDownloaded = $"{nameof(Scheduler)}.{nameof(_savingStateFileName_urlsDownloaded)}.txt";
+            if (File.Exists(_savingStateFileName_urlsQueue)) {
+                foreach (var url in File.ReadAllLines(_savingStateFileName_urlsQueue)) {
+                    _urlsQueue.Enqueue(url);
+                }
+            }
+            if (File.Exists(_savingStateFileName_urlsDownloaded)) {
+                foreach (var url in File.ReadAllLines(_savingStateFileName_urlsDownloaded)) {
+                    _urlsDownloaded.TryAdd(url, true);
+                }
+            }
+
+        }
 
         public IScheduler<string> AddUrlDequeueEventListens(Action<List<string>> onUrlDequeue) {
             OnUrlDequeue += onUrlDequeue;
@@ -83,7 +103,8 @@ namespace Crawler {
         }
 
         public void SavingState() {
-            //do
+            File.WriteAllLines(_savingStateFileName_urlsQueue, _urlsQueue);
+            File.WriteAllLines(_savingStateFileName_urlsDownloaded, _urlsDownloaded.Select(kv => kv.Key));
         }
     }
 }
