@@ -17,7 +17,8 @@ Urls管理模块。
 # Crawler.IPipeline
 结果处理管道。实现了树形管道。
 
-# 使用
+# 使用:
+
 ```
 using (new Engine(
     new Downloader(),
@@ -32,7 +33,6 @@ using (new Engine(
 
     while ('y' != Console.ReadKey().KeyChar) ;
 }
-
 ```
 
 当然，你需要写自己的管道逻辑来处理你的业务，你只需要继承AbstractPipeline即可，适当扩展，就可以。
