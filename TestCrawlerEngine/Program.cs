@@ -15,8 +15,10 @@ namespace TestCrawlerEngine {
                 new DownloadResultProcesser(),
                 new Scheduler())
                 .AddUrls(new List<string> { "https://cn.tripadvisor.com/Restaurants-g293915-Thailand.html" })
-                .AddPipeline(new WriteUrlsToConsolePipeline())
-                .Run();
+                .AddPipeline(
+                    new FindAllUrlsPipeline()
+                    .NextPipeline(new WriteUrlsToConsolePipeline())
+                ).Run();
 
             while ('y' != Console.ReadKey().KeyChar) ;
 

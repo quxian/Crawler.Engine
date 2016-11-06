@@ -4,11 +4,11 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{9ACDFF8A-276A-4F3F-9BD6-2CC045170C27}</ProjectGuid>
+    <ProjectGuid>{4DE91221-7C23-4CCB-A991-1D1D937028EC}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Crawler.WriteUrlsToConsolePipeline</RootNamespace>
-    <AssemblyName>Crawler.WriteUrlsToConsolePipeline</AssemblyName>
+    <RootNamespace>Crawler.FindAllUrlsPipeline</RootNamespace>
+    <AssemblyName>Crawler.FindAllUrlsPipeline</AssemblyName>
     <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>
@@ -44,7 +44,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="WriteUrlsToConsolePipeline.cs" />
+    <Compile Include="FindAllUrlsPipeline.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

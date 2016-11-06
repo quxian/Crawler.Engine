@@ -62,6 +62,10 @@
       <Project>{90DB6255-7DDB-4B17-B7C4-1071CA75E83E}</Project>
       <Name>Crawler.Engine</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Crawler.FindAllUrlsPipeline\Crawler.FindAllUrlsPipeline.csproj">
+      <Project>{4de91221-7c23-4ccb-a991-1d1d937028ec}</Project>
+      <Name>Crawler.FindAllUrlsPipeline</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Crawler.IDownloader\Crawler.IDownloader.csproj">
       <Project>{99699760-4ee6-4753-adca-0714a7b9da99}</Project>
       <Name>Crawler.IDownloader</Name>
