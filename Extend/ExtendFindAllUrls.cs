@@ -8,21 +8,23 @@ using System.Threading.Tasks;
 
 namespace Extend {
     public static class ExtendFindAllUrls {
-        public static List<string> FindAllUrls(this DownloadResult page) {
+        public static List<string> FindAllUrls(this DownloadResult downloadResult) {
             var doc = new HtmlDocument();
-            doc.LoadHtml(page.Result);
+            doc.LoadHtml(downloadResult.Result);
 
-            var index = page.CurrentUrl.LastIndexOf('/');
+            var index = downloadResult.CurrentUrl.LastIndexOf('/');
+            var baseAddress = string.Empty;
             if (-1 != index) {
-                page.CurrentUrl = page.CurrentUrl.Substring(0, index);
+                baseAddress = downloadResult.CurrentUrl.Substring(0, index);
             }
             var urls = _FindAllUrls(doc)?.Select(url => {
                 if (url.IndexOf("http") == 0)
                     return url;
                 if (url.Contains("javascript") || url.IndexOf("http") > 0)
                     return null;
-                return page.CurrentUrl + url;
+                return baseAddress + url;
             }).Where(url => null != url);
+
             return urls?.ToList();
         }
 

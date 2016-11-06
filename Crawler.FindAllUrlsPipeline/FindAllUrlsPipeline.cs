@@ -8,32 +8,11 @@ using System.Text;
 using System.Threading.Tasks;
 
 namespace Crawler {
-    public class FindAllUrlsPipeline : IPipeline<DownloadResult, List<string>> {
-        public event Action OnDispose;
-        public event Action<List<string>> OnResult;
-
-        public void Dispose() {
-            OnDispose?.Invoke();
-
-            SavingState();
-        }
-
-        public void Extract(DownloadResult previousResult) {
+    public class FindAllUrlsPipeline : AbstractPipeline<DownloadResult, List<string>> {
+        public override void Extract(DownloadResult previousResult) {
             var urls = previousResult.FindAllUrls();
 
-            OnResult?.Invoke(urls);
-        }
-
-        public IPipeline<DownloadResult, List<string>> NextPipeline<VNextResult>(IPipeline<List<string>, VNextResult> nextPipeline) {
-            OnResult += nextPipeline.Extract;
-            OnDispose += nextPipeline.Dispose;
-
-            return this;
-        }
-
-        public void SavingState() {
-            //do
-
+            _onResult(urls);
         }
     }
 }

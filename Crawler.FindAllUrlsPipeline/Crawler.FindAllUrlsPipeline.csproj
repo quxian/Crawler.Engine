@@ -48,6 +48,10 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Crawler.AbstractPipeline\Crawler.AbstractPipeline.csproj">
+      <Project>{a962cff9-ae8a-47a3-9bc0-44a5ce4d9865}</Project>
+      <Name>Crawler.AbstractPipeline</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Crawler.IPipeline\Crawler.IPipeline.csproj">
       <Project>{C869C0BF-6D46-4B37-B05E-7E8955076A0C}</Project>
       <Name>Crawler.IPipeline</Name>

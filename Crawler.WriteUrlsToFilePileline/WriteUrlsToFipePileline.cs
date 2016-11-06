@@ -9,7 +9,7 @@ using System.Threading;
 using System.Threading.Tasks;
 
 namespace Crawler {
-    public class WriteUrlsToFilePileline : IPipeline<List<string>, List<string>> {
+    public class WriteUrlsToFilePileline : AbstractPipeline<List<string>, List<string>> {
         private readonly string _filePath;
         private readonly ConcurrentQueue<string> _urlsQueue = new ConcurrentQueue<string>();
         private long _urlsCount = 0;
@@ -23,23 +23,18 @@ namespace Crawler {
         public WriteUrlsToFilePileline(string filePath) {
             _filePath = filePath;
             streamWriter = new StreamWriter(new FileStream(_filePath, FileMode.OpenOrCreate, FileAccess.Write));
+
+            OnDispose += () => {
+                try {
+                    _manualResetEvents.ForEach(thred => thred.WaitOne());
+                    WriteUrlsToFile(new ManualResetEvent(false));
+                } catch (Exception e) {
+                    Console.WriteLine(e);
+                }
+            };
         }
 
-
-        public event Action OnDispose;
-        public event Action<List<string>> OnResult;
-
-        public void Dispose() {
-            OnDispose?.Invoke();
-
-            _manualResetEvents.ForEach(thred => thred.WaitOne());
-
-            WriteUrlsToFile(new ManualResetEvent(false));
-
-            SavingState();
-        }
-
-        public void Extract(List<string> previousResult) {
+        public override void Extract(List<string> previousResult) {
             previousResult.ForEach(url => _urlsQueue.Enqueue(url));
             if (_urlsQueue.Count > 10000 && _manualResetEvents.Count <= 64) {
                 var manualResetEvent = new ManualResetEvent(false);
@@ -47,8 +42,7 @@ namespace Crawler {
                 ThreadPool.QueueUserWorkItem(new WaitCallback(WriteUrlsToFile), manualResetEvent);
             }
 
-
-            OnResult?.Invoke(previousResult);
+            _onResult(previousResult);
         }
 
         private void WriteUrlsToFile(object obj) {
@@ -72,15 +66,5 @@ namespace Crawler {
             }
         }
 
-        public IPipeline<List<string>, List<string>> NextPipeline<VNextResult>(IPipeline<List<string>, VNextResult> nextPipeline) {
-            OnResult += nextPipeline.Extract;
-            OnDispose += nextPipeline.Dispose;
-
-            return this;
-        }
-
-        public void SavingState() {
-            //do
-        }
     }
 }

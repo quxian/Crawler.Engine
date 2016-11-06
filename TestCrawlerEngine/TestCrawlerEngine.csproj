@@ -50,6 +50,10 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Crawler.AbstractPipeline\Crawler.AbstractPipeline.csproj">
+      <Project>{a962cff9-ae8a-47a3-9bc0-44a5ce4d9865}</Project>
+      <Name>Crawler.AbstractPipeline</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Crawler.Downloader\Crawler.Downloader.csproj">
       <Project>{74a65a9a-afb3-4bcb-b78e-28c190b0f501}</Project>
       <Name>Crawler.Downloader</Name>
