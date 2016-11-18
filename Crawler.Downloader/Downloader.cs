@@ -19,6 +19,8 @@ namespace Crawler {
         private ConcurrentQueue<DownloadResult> _downloadedResult = new ConcurrentQueue<DownloadResult>();
         private bool _isStop = false;
         private Thread _doDownloadThread;
+        private int _threadPoolCount;
+        private List<ManualResetEvent> _manualResetEvents = new List<ManualResetEvent>();
         private int _downloadThreadSleepTime;
         private string _savingStateFileName;
         private string _savingStateFileName_downloadedResult;
@@ -29,8 +31,16 @@ namespace Crawler {
 
         public Downloader(int downloadThreadSleepTime = 0) {
             _downloadThreadSleepTime = downloadThreadSleepTime;
+            _threadPoolCount = 200;
+
             _savingStateFileName = $"{nameof(Downloader)}.txt";
             _savingStateFileName_downloadedResult = $"{nameof(Downloader)}.{nameof(_savingStateFileName_downloadedResult)}.txt";
+            streamWriter = new StreamWriter(new FileStream(_savingStateFileName_downloadedResult, FileMode.Append, FileAccess.Write));
+
+            InitModule();
+        }
+
+        private void InitModule() {
             if (File.Exists(_savingStateFileName)) {
                 File.ReadAllLines(_savingStateFileName)
                     .ToList()
@@ -38,8 +48,6 @@ namespace Crawler {
                         _urlsQueue.Enqueue(url);
                     });
             }
-
-            streamWriter = new StreamWriter(new FileStream(_savingStateFileName_downloadedResult, FileMode.Append, FileAccess.Write));
         }
 
         public event Action<DownloadResult> OnDownloadResult;
@@ -60,37 +68,54 @@ namespace Crawler {
             _isStop = true;
             _doDownloadThread.Join();
 
+            while (_threadPoolCount < 200) {
+                Thread.Sleep(0);
+            }
+
             _http.Dispose();
 
             SavingState();
         }
 
-        private async void DoDownload() {
+        private void DoDownload() {
+
             while (!_isStop) {
                 if (_urlsQueue.IsEmpty) {
                     Thread.Sleep(100);
                     continue;
                 }
-
+                if (_threadPoolCount <= 0) {
+                    Thread.Sleep(0);
+                    continue;
+                }
+                --_threadPoolCount;
                 var url = string.Empty;
                 _urlsQueue.TryDequeue(out url);
                 if (null == url || string.Empty.Equals(url))
                     continue;
 
-                try {
-                    var result = await _http.GetStringAsync(url);
-                    var downloadResult = new DownloadResult { CurrentUrl = url, Result = result };
-                    OnDownloadResult?.Invoke(downloadResult);
-                    _downloadedResult.Enqueue(downloadResult);
-                    if (_downloadedResult.Count >= 1000) {
-                        ThreadPool.QueueUserWorkItem(new WaitCallback(x => { }));
-                    }
-                } catch (Exception e) {
-                    _exceptionUrls.Enqueue(url);
-                    Console.WriteLine(new { Url = url, Exception = e });
-                }
+                ThreadPool.QueueUserWorkItem(new WaitCallback(x => {
+                    _DoDownload(url);
+                    ++_threadPoolCount;
+                }));
 
                 Thread.Sleep(0);
+            }
+        }
+
+        private async void _DoDownload(string url) {
+            try {
+                var result = await _http.GetStringAsync(url);
+                var downloadResult = new DownloadResult { CurrentUrl = url, Result = result };
+                OnDownloadResult?.Invoke(downloadResult);
+                _downloadedResult.Enqueue(downloadResult);
+
+                if (_downloadedResult.Count >= 1000) {
+                    ThreadPool.QueueUserWorkItem(new WaitCallback(x => SaveDownloadedResult(x)));
+                }
+            } catch (Exception e) {
+                _exceptionUrls.Enqueue(url);
+                Console.WriteLine(new { Url = url, Exception = e });
             }
         }
 
@@ -107,6 +132,11 @@ namespace Crawler {
                     _downloadedResult.TryDequeue(out downloadedReuslt);
                     if (null != downloadedReuslt)
                         sb.AppendLine(JsonConvert.SerializeObject(downloadedReuslt));
+                    if (sb.Length >= 100000) {
+                        streamWriter.Write(sb.ToString());
+                        streamWriter.Flush();
+                        sb.Clear();
+                    }
                 }
                 streamWriter.Write(sb.ToString());
                 streamWriter.Flush();

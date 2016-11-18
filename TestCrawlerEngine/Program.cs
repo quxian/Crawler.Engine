@@ -17,7 +17,7 @@ namespace TestCrawlerEngine {
                 .AddUrls(new List<string> { "https://www.baidu.com/" })
                 .AddPipeline(
                     new FindAllUrlsPipeline()
-                    .NextPipeline(new WriteUrlsToConsolePipeline())
+                    //.NextPipeline(new WriteUrlsToConsolePipeline())
                     .NextPipeline(new WriteUrlsToFilePileline("urls.txt"))
                 ).Run()) {
 
